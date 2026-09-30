@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['nombre'] = $nombre;
 
         // Redirigir a la pantalla de bienvenida que me pediste antes
-        header("Location: inicio.php");
+        header("Location: dashboard.php");
         exit();
 
     } catch (PDOException $e) {
