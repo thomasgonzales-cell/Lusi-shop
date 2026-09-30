@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['rol'] = $usuario['rol'];
 
             // Redirigir a la pantalla de bienvenida
-            header("Location: inicio.php");
+            header("Location: dashboard.php");
             exit();
         } else {
             echo "Error: La contraseña ingresada no coincide con la registrada.<br>";
