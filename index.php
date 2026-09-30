@@ -135,17 +135,6 @@ require_once 'conexion.php';
             color: #000000;
         }
 
-        /* Punto rojo decorativo lateral */
-        .red-dot {
-            position: absolute;
-            right: 20%;
-            top: 48%;
-            width: 8px;
-            height: 8px;
-            background-color: #ff0000;
-            border-radius: 50%;
-        }
-
         /* Responsive para pantallas pequeñas */
         @media (max-width: 600px) {
             .header-logo {
@@ -157,9 +146,6 @@ require_once 'conexion.php';
             }
             .welcome-text {
                 font-size: 1.1rem;
-            }
-            .red-dot {
-                display: none;
             }
         }
     </style>
@@ -194,13 +180,6 @@ require_once 'conexion.php';
         </p>
     </main>
 
-    <!-- Punto rojo flotante de la referencia -->
-    <div class="red-dot"></div>
-
 </body>
 </html>
-
-
-/**hola */
-
-/**hola */
+ 
