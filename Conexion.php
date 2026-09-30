@@ -1,10 +1,10 @@
 <?php
 // Parámetros de conexión de tu base de datos PostgreSQL en Render
-$host     = "dpg-daqnm07avr4c73929ms0-a"; // Ej: dpg-xxxx-a.oregon-postgres.render.com
+$host     = "dpg-daulsnu0tbcc73bq1e40-a"; // Ej: dpg-xxxx-a.oregon-postgres.render.com
 $port     = "5432";
-$dbname   = "bsd_lusi_shop";
-$user     = "bsd_lusi_shop_user";
-$password = "WzUJw0qQ0lEsh2FpEIokzxFOBAcoNQVo";
+$dbname   = "bsd_lusi_shop_bd";
+$user     = "bsd_lusi_shop_bd_user";
+$password = "zZDjtVq4KL9wKMiLDeA4oX0b5nxVbJSb";
 
 // Cadena de conexión PDO para PostgreSQL en Render
 $dsn = "pgsql:host=$host;port=$port;dbname=$dbname;sslmode=require";
