@@ -2,13 +2,16 @@
 session_start();
 require_once 'conexion.php';
 
+// Habilitar la visualización de errores temporalmente
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = trim($_POST['usuario']);
     $password_plana = $_POST['password'];
 
     if (empty($email) || empty($password_plana)) {
-        echo "<script>alert('Por favor ingresa tus datos.'); window.location.href='login.php';</script>";
-        exit();
+        die("Error: Por favor ingresa tus datos.");
     }
 
     try {
@@ -17,8 +20,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->execute([$email]);
         $usuario = $stmt->fetch();
 
-        // Verificar si existe el usuario y si la contraseña coincide
-        if ($usuario && password_verify($password_plana, $usuario['password'])) {
+        if (!$usuario) {
+            die("Error: El correo o usuario '$email' no existe en la base de datos.");
+        }
+
+        // Verificar la contraseña
+        if (password_verify($password_plana, $usuario['password'])) {
             // Guardar datos en la sesión
             $_SESSION['usuario'] = $usuario['email'];
             $_SESSION['nombre'] = $usuario['nombre'];
@@ -28,12 +35,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             header("Location: inicio.php");
             exit();
         } else {
-            echo "<script>alert('Correo o contraseña incorrectos.'); window.location.href='login.php';</script>";
-            exit();
+            echo "Error: La contraseña ingresada no coincide con la registrada.<br>";
+            echo "Contraseña ingresada: " . htmlspecialchars($password_plana) . "<br>";
+            echo "Hash en la base de datos: " . $usuario['password'];
         }
 
     } catch (PDOException $e) {
-        echo "Error en el inicio de sesión: " . $e->getMessage();
+        echo "Error en la consulta de la base de datos: " . $e->getMessage();
     }
 }
 ?>
