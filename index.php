@@ -170,7 +170,7 @@ require_once 'conexion.php';
         <!-- Botones de Acción -->
         <div class="btn-container">
             <a href="login.php" class="btn">INICIAR SESIÓN</a>
-            <a href="registro.php" class="btn">REGISTRARME</a>
+            <a href="registrar.php" class="btn">REGISTRARME</a>
         </div>
 
         <!-- Texto Descriptivo -->
