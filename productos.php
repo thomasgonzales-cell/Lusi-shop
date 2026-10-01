@@ -144,6 +144,8 @@
             cursor: pointer;
             transition: background-color 0.2s ease;
             text-decoration: none;
+            display: inline-block;
+            text-align: center;
         }
 
         .btn-buy:hover {
@@ -212,28 +214,28 @@
     <main class="main-content">
         <div class="products-container">
             
-            <!-- Producto 1: Panzerotti (Estilo colombiano con queso fundido) -->
+            <!-- Producto 1: Panzerotti -->
             <div class="product-card">
                 <img src="panzerotti.png" alt="Panzerotti" class="product-image">
                 <div class="product-name">Panzerotti</div>
                 <div class="product-price">3,500$</div>
-                <a href="#" class="btn-buy" onclick="alert('¡Producto agregado al carrito con éxito!'); return false;">Comprar</a>
+                <a href="checkout.php?nombre=Panzerotti&precio=3500&imagen=panzerotti.png" class="btn-buy">Comprar</a>
             </div>
 
-            <!-- Producto 2: Gaseosa (Gaseosa rosada / tipo colombiana) -->
+            <!-- Producto 2: Gaseosa -->
             <div class="product-card">
                 <img src="pool.png" alt="Gaseosa" class="product-image">
                 <div class="product-name">Gaseosa</div>
                 <div class="product-price">2,000$</div>
-                <a href="#" class="btn-buy" onclick="alert('¡Producto agregado al carrito con éxito!'); return false;">Comprar</a>
+                <a href="checkout.php?nombre=Gaseosa&precio=2000&imagen=pool.png" class="btn-buy">Comprar</a>
             </div>
 
-            <!-- Producto 3: Empanada (Empanadas colombianas doradas de maíz) -->
+            <!-- Producto 3: Empanada -->
             <div class="product-card">
                 <img src="empanada.png" alt="Empanada" class="product-image">
                 <div class="product-name">Empanada</div>
                 <div class="product-price">2,500$</div>
-                <a href="#" class="btn-buy" onclick="alert('¡Producto agregado al carrito con éxito!'); return false;">Comprar</a>
+                <a href="checkout.php?nombre=Empanada&precio=2500&imagen=empanada.png" class="btn-buy">Comprar</a>
             </div>
 
             <!-- Flecha siguiente -->
@@ -248,4 +250,4 @@
     </div>
 
 </body>
-</html> 
+</html>
