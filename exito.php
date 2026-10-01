@@ -56,7 +56,7 @@ unset($_SESSION['carrito']);
         
         <h1 class="success-message">Su pedido se realizó con éxito!</h1>
 
-        <a href="dashboard.php" class="btn-dashboard">Volver al inicio (Dashboard)</a>
+        <a href="dashboard.php" class="btn-dashboard">Volver al inicio</a>
     </main>
 
     <script>
