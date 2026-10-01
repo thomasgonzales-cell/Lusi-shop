@@ -222,7 +222,7 @@
 
             <!-- Producto 2: Gaseosa (Gaseosa rosada / tipo colombiana) -->
             <div class="product-card">
-                <img src="https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=500&q=80" alt="Gaseosa" class="product-image">
+                <img src="pool.png" alt="Gaseosa" class="product-image">
                 <div class="product-name">Gaseosa</div>
                 <div class="product-price">2,000$</div>
                 <a href="#" class="btn-buy" onclick="alert('¡Producto agregado al carrito con éxito!'); return false;">Comprar</a>
@@ -230,7 +230,7 @@
 
             <!-- Producto 3: Empanada (Empanadas colombianas doradas de maíz) -->
             <div class="product-card">
-                <img src="https://images.unsplash.com/photo-1541529086526-db283c563270?auto=format&fit=crop&w=500&q=80" alt="Empanada" class="product-image">
+                <img src="empanada.png" alt="Empanada" class="product-image">
                 <div class="product-name">Empanada</div>
                 <div class="product-price">2,500$</div>
                 <a href="#" class="btn-buy" onclick="alert('¡Producto agregado al carrito con éxito!'); return false;">Comprar</a>
