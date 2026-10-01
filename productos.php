@@ -114,7 +114,8 @@
             object-fit: cover;
             border-radius: 8px;
             margin-bottom: 15px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            background-color: #f7f7f7;
         }
 
         .product-name {
@@ -190,7 +191,7 @@
                 gap: 30px;
             }
             .next-arrow {
-                display: none; /* Ocultar o acomodar en celulares si es necesario */
+                display: none;
             }
         }
     </style>
@@ -211,28 +212,28 @@
     <main class="main-content">
         <div class="products-container">
             
-            <!-- Producto 1: Panzerotti -->
+            <!-- Producto 1: Panzerotti (Estilo colombiano con queso fundido) -->
             <div class="product-card">
-                <img src="https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=500&q=80" alt="Panzerotti" class="product-image">
+                <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=500&q=80" alt="Panzerotti" class="product-image">
                 <div class="product-name">Panzerotti</div>
                 <div class="product-price">3,500$</div>
-                <a href="#" class="btn-buy" onclick="alert('Producto agregado al carrito'); return false;">Comprar</a>
+                <a href="#" class="btn-buy" onclick="alert('¡Producto agregado al carrito con éxito!'); return false;">Comprar</a>
             </div>
 
-            <!-- Producto 2: Gaseosa -->
+            <!-- Producto 2: Gaseosa (Gaseosa rosada / tipo colombiana) -->
             <div class="product-card">
                 <img src="https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=500&q=80" alt="Gaseosa" class="product-image">
                 <div class="product-name">Gaseosa</div>
                 <div class="product-price">2,000$</div>
-                <a href="#" class="btn-buy" onclick="alert('Producto agregado al carrito'); return false;">Comprar</a>
+                <a href="#" class="btn-buy" onclick="alert('¡Producto agregado al carrito con éxito!'); return false;">Comprar</a>
             </div>
 
-            <!-- Producto 3: Empanada -->
+            <!-- Producto 3: Empanada (Empanadas colombianas doradas de maíz) -->
             <div class="product-card">
-                <img src="https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=500&q=80" alt="Empanada" class="product-image">
+                <img src="https://images.unsplash.com/photo-1541529086526-db283c563270?auto=format&fit=crop&w=500&q=80" alt="Empanada" class="product-image">
                 <div class="product-name">Empanada</div>
                 <div class="product-price">2,500$</div>
-                <a href="#" class="btn-buy" onclick="alert('Producto agregado al carrito'); return false;">Comprar</a>
+                <a href="#" class="btn-buy" onclick="alert('¡Producto agregado al carrito con éxito!'); return false;">Comprar</a>
             </div>
 
             <!-- Flecha siguiente -->
@@ -247,4 +248,4 @@
     </div>
 
 </body>
-</html>
+</html> 
