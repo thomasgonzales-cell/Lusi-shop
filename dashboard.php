@@ -2,7 +2,7 @@
 // Iniciamos sesión para validar que el usuario esté autenticado
 session_start();
 
-// Opcional: si quieres proteger la página para que solo entren si iniciaron sesión, descomenta esto:
+// Proteger la página para que solo entren si iniciaron sesión
 if (!isset($_SESSION['usuario'])) {
     header("Location: login.php");
     exit();
@@ -43,9 +43,15 @@ if (!isset($_SESSION['usuario'])) {
             height: 75px;
             display: flex;
             align-items: center;
+            justify-content: space-between;
             padding: 0 20px;
-            gap: 15px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .banner-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
 
         /* Logotipo circular dentro de la franja */
@@ -87,6 +93,23 @@ if (!isset($_SESSION['usuario'])) {
             color: #ffffff;
             font-size: 1.5rem;
             font-weight: 600;
+        }
+
+        /* Botón de cerrar sesión */
+        .btn-logout {
+            background-color: #ffffff;
+            color: #e50000;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .btn-logout:hover {
+            background-color: #0d1b2a;
+            color: #ffffff;
         }
 
         /* Contenido principal centrado */
@@ -133,6 +156,7 @@ if (!isset($_SESSION['usuario'])) {
             padding: 20px;
             font-size: 1rem;
             font-weight: 600;
+            text-align: center;
         }
 
         .footer a {
@@ -155,6 +179,10 @@ if (!isset($_SESSION['usuario'])) {
             .banner-title {
                 font-size: 1.2rem;
             }
+            .btn-logout {
+                padding: 6px 10px;
+                font-size: 0.85rem;
+            }
         }
     </style>
 </head>
@@ -162,17 +190,21 @@ if (!isset($_SESSION['usuario'])) {
 
     <!-- Franja superior -->
     <header class="top-banner">
-        <a href="inicio.php" class="banner-logo">
-            <div class="cart-icon">🛒</div>
-            <div class="brand-name">lusi</div>
-            <div class="brand-sub">shop</div>
-        </a>
-        <span class="banner-title">Lusi shop</span>
+        <div class="banner-left">
+            <a href="dashboard.php" class="banner-logo">
+                <div class="cart-icon">🛒</div>
+                <div class="brand-name">lusi</div>
+                <div class="brand-sub">shop</div>
+            </a>
+            <span class="banner-title">Lusi shop</span>
+        </div>
+        <!-- Botón de Cerrar Sesión -->
+        <a href="logout.php" class="btn-logout">Cerrar sesión</a>
     </header>
 
     <!-- Contenido Central -->
     <main class="main-content">
-        <h1 class="welcome-heading">¡Bienvenido a Lusi shop!</h1>
+        <h1 class="welcome-heading">¡Bienvenido a Lusi shop<?php echo isset($_SESSION['nombre']) ? ', ' . htmlspecialchars($_SESSION['nombre']) : ''; ?>!</h1>
         
         <p class="welcome-phrase">
             Un descanso, un antojo,<br>
@@ -184,7 +216,7 @@ if (!isset($_SESSION['usuario'])) {
 
     <!-- Pie de página -->
     <footer class="footer">
-        <a href="acerca.php">Acerca de nostros</a>
+        <a href="acerca.php">Acerca de nosotros</a>
     </footer>
 
 </body>
