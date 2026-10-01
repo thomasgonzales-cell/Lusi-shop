@@ -104,7 +104,7 @@ if (isset($_GET['accion']) && $_GET['accion'] == 'vaciar') {
                 <div class="action-buttons">
                     <a href="productos.php" class="btn-action btn-secondary">Seguir comprando</a>
                     <a href="carrito.php?accion=vaciar" class="btn-action btn-secondary" onclick="return confirm('¿Vaciar carrito?');">Vaciar</a>
-                    <a href="#" class="btn-action" onclick="alert('¡Compra realizada con éxito!'); window.location.href='dashboard.php';">Realizar compra</a>
+                    <a href="exito.php" class="btn-action">Realizar compra</a>
                 </div>
             </div>
         <?php endif; ?>
