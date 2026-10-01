@@ -214,7 +214,7 @@
             
             <!-- Producto 1: Panzerotti (Estilo colombiano con queso fundido) -->
             <div class="product-card">
-                <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=500&q=80" alt="Panzerotti" class="product-image">
+                <img src="panzerotti.png" alt="Panzerotti" class="product-image">
                 <div class="product-name">Panzerotti</div>
                 <div class="product-price">3,500$</div>
                 <a href="#" class="btn-buy" onclick="alert('¡Producto agregado al carrito con éxito!'); return false;">Comprar</a>
