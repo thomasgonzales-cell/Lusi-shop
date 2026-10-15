@@ -1,6 +1,12 @@
 <?php
 session_start();
 
+// Verificar que el administrador haya iniciado sesión
+if (!isset($_SESSION['admin_logged']) || $_SESSION['admin_logged'] !== true) {
+    header("Location: admin_login.php");
+    exit();
+}
+
 // Conexión a PostgreSQL (Ajusta tus datos de conexión de Render)
 $host = 'tu_host_de_render';
 $db   = 'tu_base_de_datos';

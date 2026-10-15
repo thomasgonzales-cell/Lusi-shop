@@ -7,6 +7,29 @@ if (!isset($_SESSION['usuario'])) {
     header("Location: login.php");
     exit();
 }
+
+// Consultar las notificaciones y estado de los pedidos del usuario actual
+$notificaciones = [];
+$usuario_id = isset($_SESSION['usuario_id']) ? $_SESSION['usuario_id'] : 0;
+
+if ($usuario_id > 0) {
+    $host = 'tu_host_de_render';
+    $db   = 'tu_base_de_datos';
+    $user = 'tu_usuario';
+    $pass = 'tu_contraseña';
+    $port = '5432';
+
+    try {
+        $dsn = "pgsql:host=$host;port=$port;dbname=$db;sslmode=require";
+        $pdo = new PDO($dsn, $user, $pass, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+
+        $stmt = $pdo->prepare("SELECT * FROM pedidos WHERE usuario_id = ? ORDER BY fecha DESC LIMIT 3");
+        $stmt->execute([$usuario_id]);
+        $notificaciones = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        // Manejo silencioso si falla la conexión momentáneamente
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -120,22 +143,66 @@ if (!isset($_SESSION['usuario'])) {
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 20px;
+            padding: 30px 20px;
         }
 
         .welcome-heading {
             font-size: 2.2rem;
             font-weight: 700;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             color: #000000;
         }
 
         .welcome-phrase {
-            font-size: 1.25rem;
+            font-size: 1.15rem;
             font-weight: 600;
             line-height: 1.5;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             color: #000000;
+        }
+
+        /* Contenedor de notificaciones */
+        .notifications-container {
+            width: 100%;
+            max-width: 600px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            text-align: left;
+        }
+
+        .notifications-container h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #0d1b2a;
+            border-bottom: 2px solid #e50000;
+            padding-bottom: 5px;
+        }
+
+        .notification-item {
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            background: #ffffff;
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .notification-item p {
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+
+        .badge-pending {
+            color: #d9822b;
+            font-weight: bold;
+        }
+
+        .badge-completed {
+            color: #28a745;
+            font-weight: bold;
         }
 
         /* Enlace a productos */
@@ -210,6 +277,29 @@ if (!isset($_SESSION['usuario'])) {
             Un descanso, un antojo,<br>
             un momento.
         </p>
+
+        <!-- Sección de notificaciones de pedidos -->
+        <div class="notifications-container">
+            <h3>🔔 Estado de tus Pedidos</h3>
+            <?php if (empty($notificaciones)): ?>
+                <p style="color: #666; font-size: 0.95rem;">No tienes pedidos recientes.</p>
+            <?php else: ?>
+                <?php foreach ($notificaciones as $n): ?>
+                    <div class="notification-item" style="border-left: 4px solid <?php echo ($n['estado'] == 'Completado') ? '#28a745' : '#ffc107'; ?>;">
+                        <p><strong>Pedido #<?php echo $n['id']; ?></strong> - Total: $<?php echo number_format($n['total'], 0, ',', '.'); ?></p>
+                        <p style="color: #555;">Productos: <?php echo htmlspecialchars($n['productos']); ?></p>
+                        <p style="margin-top: 6px;">
+                            Estado: 
+                            <?php if ($n['estado'] == 'Completado'): ?>
+                                <span class="badge-completed">¡Pedido listo / entregado!</span>
+                            <?php else: ?>
+                                <span class="badge-pending">En proceso (Pendiente)</span>
+                            <?php endif; ?>
+                        </p>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
 
         <a href="productos.php" class="products-link">Ver productos</a>
     </main>
