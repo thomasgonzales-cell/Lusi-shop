@@ -6,7 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $correo = trim($_POST['correo']);
     $password = $_POST['password'];
 
-    // Conexión a PostgreSQL (Ajusta tus datos de Render)
+    // Credenciales de conexión a PostgreSQL en Render
     $host = 'tu_host_de_render';
     $db   = 'tu_base_de_datos';
     $user = 'tu_usuario';
@@ -21,14 +21,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->execute([$correo]);
         $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($usuario && password_verify($password, $usuario['password'])) {
-            // Guardar datos en sesión
+        // Validar contraseña (soporta texto plano si estás probando, o hash encriptado)
+        if ($usuario && (password_verify($password, $usuario['password']) || $password === $usuario['password'])) {
+            // Guardar variables necesarias en la sesión
             $_SESSION['usuario'] = $usuario['correo'];
             $_SESSION['nombre'] = $usuario['nombre'];
             $_SESSION['usuario_id'] = $usuario['id'];
             
-            // Redirigir según el rol
-            if (isset($usuario['rol']) && $usuario['rol'] == 'admin') {
+            // Redirigir según el rol del usuario
+            if (isset($usuario['rol']) && $usuario['rol'] === 'admin') {
                 $_SESSION['admin_logged'] = true;
                 header("Location: admin.php");
             } else {
@@ -39,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $error = "Correo o contraseña incorrectos.";
         }
     } catch (PDOException $e) {
-        $error = "Error de conexión con la base de datos.";
+        $error = "Error al conectar a la base de datos. Verifica tus credenciales.";
     }
 }
 ?>
@@ -77,7 +78,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         .error-msg { background-color: #ffe6e6; color: #d32f2f; padding: 10px; border-radius: 6px; margin-bottom: 20px; font-size: 0.9rem; font-weight: 600; }
         
-        /* Apartado exclusivo para Admin */
         .admin-section { margin-top: 25px; border-top: 1px solid #ddd; padding-top: 15px; }
         .admin-link { font-size: 0.9rem; color: #0d1b2a; font-weight: 600; text-decoration: none; }
         .admin-link:hover { color: #e50000; text-decoration: underline; }
@@ -114,7 +114,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <button type="submit" class="btn-submit">Entrar</button>
             </form>
 
-            <!-- Apartado para acceso del administrador -->
             <div class="admin-section">
                 <a href="admin_login.php" class="admin-link">🔒 ¿Eres administrador? Inicia sesión aquí</a>
             </div>
