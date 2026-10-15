@@ -13,10 +13,10 @@ $notificaciones = [];
 $usuario_id = isset($_SESSION['usuario_id']) ? $_SESSION['usuario_id'] : 0;
 
 if ($usuario_id > 0) {
-    $host = 'tu_host_de_render';
-    $db   = 'tu_base_de_datos';
-    $user = 'tu_usuario';
-    $pass = 'tu_contraseña';
+    $host = 'dpg-daulsnu0tbcc73bq1e40-a';
+    $db   = 'bsd_lusi_shop_bd';
+    $user = 'bsd_lusi_shop_bd_user';
+    $pass = 'zZDjtVq4KL9wKMiLDeA4oX0b5nxVbJSb';
     $port = '5432';
 
     try {
