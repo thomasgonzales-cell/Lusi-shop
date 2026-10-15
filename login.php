@@ -6,7 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $correo = trim($_POST['correo']);
     $password = $_POST['password'];
 
-    // Credenciales de conexión a PostgreSQL en Render
+    // Tus credenciales reales de Render
     $host = 'dpg-daulsnu0tbcc73bq1e40-a';
     $db   = 'bsd_lusi_shop_bd';
     $user = 'bsd_lusi_shop_bd_user';
@@ -37,7 +37,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $error = "Correo o contraseña incorrectos.";
         }
     } catch (PDOException $e) {
-        $error = "Error al conectar a la base de datos. Verifica tus credenciales.";
+        // Muestra el error exacto devuelto por PostgreSQL
+        $error = "Error de conexión: " . $e->getMessage();
     }
 }
 ?>
@@ -73,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         .btn-submit { background-color: #e50000; color: white; border: none; width: 100%; padding: 12px; border-radius: 6px; font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: background 0.2s; }
         .btn-submit:hover { background-color: #c40000; }
         
-        .error-msg { background-color: #ffe6e6; color: #d32f2f; padding: 10px; border-radius: 6px; margin-bottom: 20px; font-size: 0.9rem; font-weight: 600; }
+        .error-msg { background-color: #ffe6e6; color: #d32f2f; padding: 10px; border-radius: 6px; margin-bottom: 20px; font-size: 0.85rem; font-weight: 600; text-align: left; word-break: break-word; }
         
         .admin-section { margin-top: 25px; border-top: 1px solid #ddd; padding-top: 15px; }
         .admin-link { font-size: 0.9rem; color: #0d1b2a; font-weight: 600; text-decoration: none; }
