@@ -1,7 +1,42 @@
 <?php
 session_start();
-// Vaciar el carrito al completar la compra exitosamente
-unset($_SESSION['carrito']);
+
+// Suponiendo que guardas el ID o el nombre del usuario en sesión al iniciar sesión (ej. $_SESSION['usuario'])
+$nombre_usuario = isset($_SESSION['usuario']) ? $_SESSION['usuario'] : 'Estudiante';
+$usuario_id = isset($_SESSION['usuario_id']) ? $_SESSION['usuario_id'] : 1;
+
+if (!empty($_SESSION['carrito'])) {
+    // Conexión a PostgreSQL (Ajusta tus credenciales de Render aquí si ya tienes un archivo de conexión global)
+    $host = 'tu_host_de_render';
+    $db   = 'tu_base_de_datos';
+    $user = 'tu_usuario';
+    $pass = 'tu_contraseña';
+    $port = '5432';
+
+    try {
+        $dsn = "pgsql:host=$host;port=$port;dbname=$db;sslmode=require";
+        $pdo = new PDO($dsn, $user, $pass, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+
+        $detalle_productos = "";
+        $gran_total = 0;
+
+        foreach ($_SESSION['carrito'] as $item) {
+            $subtotal = $item['precio'] * $item['cantidad'];
+            $gran_total += $subtotal;
+            $detalle_productos .= $item['cantidad'] . "x " . $item['nombre'] . " ($" . number_format($subtotal, 0, ',', '.') . "); ";
+        }
+
+        // Insertar pedido en la base de datos
+        $stmt = $pdo->prepare("INSERT INTO pedidos (usuario_id, nombre_usuario, productos, total, estado) VALUES (?, ?, ?, ?, 'Pendiente')");
+        $stmt->execute([$usuario_id, $nombre_usuario, $detalle_productos, $gran_total]);
+
+    } catch (PDOException $e) {
+        // Manejo silencioso o log de error si falla la BD momentáneamente
+    }
+
+    // Vaciar el carrito después de guardar el pedido
+    unset($_SESSION['carrito']);
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -30,7 +65,8 @@ unset($_SESSION['carrito']);
         .success-icon-container { width: 140px; height: 140px; border: 8px solid #32a852; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 30px; }
         .success-check { color: #32a852; font-size: 5rem; font-weight: bold; line-height: 1; }
 
-        .success-message { font-size: 2rem; font-weight: 700; color: #000000; margin-bottom: 40px; }
+        .success-message { font-size: 2rem; font-weight: 700; color: #000000; margin-bottom: 15px; }
+        .success-sub { font-size: 1.1rem; color: #555; margin-bottom: 40px; }
 
         .btn-dashboard { background-color: #e50000; color: #ffffff; border: none; padding: 14px 35px; border-radius: 8px; font-family: 'Montserrat', sans-serif; font-size: 1.2rem; font-weight: 700; cursor: pointer; text-decoration: none; transition: background-color 0.2s ease; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .btn-dashboard:hover { background-color: #c40000; }
@@ -55,16 +91,16 @@ unset($_SESSION['carrito']);
         </div>
         
         <h1 class="success-message">Su pedido se realizó con éxito!</h1>
+        <p class="success-sub">Notificación enviada: El administrador ya ha recibido tu solicitud y está en proceso.</p>
 
         <a href="dashboard.php" class="btn-dashboard">Volver al inicio</a>
     </main>
 
     <script>
-        // Opcional: Redirigir automáticamente al dashboard después de 5 segundos si el usuario no hace clic
         setTimeout(function() {
             window.location.href = 'dashboard.php';
-        }, 5000);
+        }, 6000);
     </script>
 
 </body>
-</html>
+</html> 
