@@ -21,14 +21,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->execute([$correo]);
         $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        // Validar contraseña (soporta texto plano si estás probando, o hash encriptado)
         if ($usuario && (password_verify($password, $usuario['password']) || $password === $usuario['password'])) {
-            // Guardar variables necesarias en la sesión
             $_SESSION['usuario'] = $usuario['correo'];
             $_SESSION['nombre'] = $usuario['nombre'];
             $_SESSION['usuario_id'] = $usuario['id'];
             
-            // Redirigir según el rol del usuario
             if (isset($usuario['rol']) && $usuario['rol'] === 'admin') {
                 $_SESSION['admin_logged'] = true;
                 header("Location: admin.php");
