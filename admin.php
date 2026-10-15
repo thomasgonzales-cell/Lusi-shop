@@ -30,6 +30,10 @@ try {
     $stmt = $pdo->query("SELECT * FROM pedidos ORDER BY fecha DESC");
     $pedidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+    // Obtener un resumen de qué clientes han hecho pedidos y cuántos llevan
+    $stmtResumen = $pdo->query("SELECT nombre_usuario, COUNT(*) as total_pedidos, SUM(total) as gasto_total FROM pedidos GROUP BY nombre_usuario ORDER BY total_pedidos DESC");
+    $resumen_clientes = $stmtResumen->fetchAll(PDO::FETCH_ASSOC);
+
 } catch (PDOException $e) {
     $error = "Error de conexión: " . $e->getMessage();
 }
@@ -58,14 +62,17 @@ try {
 
         .main-content { flex: 1; max-width: 1200px; margin: 0 auto; width: 100%; padding: 40px 20px; }
         .admin-title { font-size: 2rem; font-weight: 700; margin-bottom: 25px; color: #0d1b2a; }
+        
+        .section-subtitle { font-size: 1.4rem; font-weight: 700; margin: 30px 0 15px 0; color: #0d1b2a; }
 
-        table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 30px; }
         th, td { padding: 15px 20px; text-align: left; border-bottom: 1px solid #eee; }
         th { background-color: #0d1b2a; color: white; font-weight: 600; }
         tr:hover { background-color: #f9f9f9; }
 
         .badge-pending { background-color: #ffc107; color: #000; padding: 5px 10px; border-radius: 4px; font-weight: bold; font-size: 0.85rem; }
         .badge-completed { background-color: #28a745; color: white; padding: 5px 10px; border-radius: 4px; font-weight: bold; font-size: 0.85rem; }
+        .badge-count { background-color: #e50000; color: white; padding: 4px 10px; border-radius: 12px; font-weight: bold; font-size: 0.9rem; }
 
         .btn-action { background-color: #007bff; color: white; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-size: 0.9rem; font-weight: 600; transition: background 0.2s; }
         .btn-action:hover { background-color: #0056b3; }
@@ -89,51 +96,82 @@ try {
 
     <main class="main-content">
         <a href="dashboard.php" class="back-link">← Volver al Dashboard</a>
-        <h1 class="admin-title">Gestión de Pedidos de la Comunidad</h1>
+        <h1 class="admin-title">Panel de Control Administrativo</h1>
 
         <?php if (isset($error)): ?>
             <p style="color: red;"><?php echo htmlspecialchars($error); ?></p>
-        <?php elseif (empty($pedidos)): ?>
-            <p style="font-size: 1.2rem; color: #666;">No hay pedidos registrados todavía.</p>
         <?php else: ?>
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Estudiante</th>
-                        <th>Productos</th>
-                        <th>Total</th>
-                        <th>Estado</th>
-                        <th>Fecha</th>
-                        <th>Acción</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($pedidos as $pedido): ?>
+
+            <!-- Apartado 1: Resumen de clientes y cantidad de pedidos -->
+            <h2 class="section-subtitle">👥 Clientes y Pedidos Realizados</h2>
+            <?php if (empty($resumen_clientes)): ?>
+                <p style="color: #666; margin-bottom: 30px;">Aún no hay registros de clientes con compras.</p>
+            <?php else: ?>
+                <table>
+                    <thead>
                         <tr>
-                            <td>#<?php echo $pedido['id']; ?></td>
-                            <td><?php echo htmlspecialchars($pedido['nombre_usuario']); ?></td>
-                            <td><?php echo htmlspecialchars($pedido['productos']); ?></td>
-                            <td>$<?php echo number_format($pedido['total'], 0, ',', '.'); ?></td>
-                            <td>
-                                <?php if ($pedido['estado'] == 'Pendiente'): ?>
-                                    <span class="badge-pending">Pendiente</span>
-                                <?php else: ?>
-                                    <span class="badge-completed">Completado</span>
-                                <?php endif; ?>
-                            </td>
-                            <td><?php echo $pedido['fecha']; ?></td>
-                            <td>
-                                <?php if ($pedido['estado'] == 'Pendiente'): ?>
-                                    <a href="admin.php?accion=completar&id=<?php echo $pedido['id']; ?>" class="btn-action">Completar</a>
-                                <?php else: ?>
-                                    <span>Entregado</span>
-                                <?php endif; ?>
-                            </td>
+                            <th>Estudiante / Cliente</th>
+                            <th>Total de Pedidos Realizados</th>
+                            <th>Monto Acumulado</th>
                         </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($resumen_clientes as $cliente): ?>
+                            <tr>
+                                <td><strong><?php echo htmlspecialchars($cliente['nombre_usuario']); ?></strong></td>
+                                <td><span class="badge-count"><?php echo $cliente['total_pedidos']; ?> pedido(s)</span></td>
+                                <td>$<?php echo number_format($cliente['gasto_total'], 0, ',', '.'); ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php endif; ?>
+
+            <!-- Apartado 2: Listado general de pedidos detallados -->
+            <h2 class="section-subtitle">📦 Detalle de Todos los Pedidos</h2>
+            <?php if (empty($pedidos)): ?>
+                <p style="font-size: 1.1rem; color: #666;">No hay pedidos registrados todavía.</p>
+            <?php else: ?>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Estudiante</th>
+                            <th>Productos</th>
+                            <th>Total</th>
+                            <th>Estado</th>
+                            <th>Fecha</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($pedidos as $pedido): ?>
+                            <tr>
+                                <td>#<?php echo $pedido['id']; ?></td>
+                                <td><?php echo htmlspecialchars($pedido['nombre_usuario']); ?></td>
+                                <td><?php echo htmlspecialchars($pedido['productos']); ?></td>
+                                <td>$<?php echo number_format($pedido['total'], 0, ',', '.'); ?></td>
+                                <td>
+                                    <?php if ($pedido['estado'] == 'Pendiente'): ?>
+                                        <span class="badge-pending">Pendiente</span>
+                                    <?php else: ?>
+                                        <span class="badge-completed">Completado</span>
+                                    <?php endif; ?>
+                                </td>
+                                <td><?php echo $pedido['fecha']; ?></td>
+                                <td>
+                                    <?php if ($pedido['estado'] == 'Pendiente'): ?>
+                                        <a href="admin.php?accion=completar&id=<?php echo $pedido['id']; ?>" class="btn-action">Completar</a>
+                                    <?php else: ?>
+                                        <span>Entregado</span>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php endif; ?>
+
         <?php endif; ?>
     </main>
 
