@@ -17,12 +17,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $dsn = "pgsql:host=$host;port=$port;dbname=$db;sslmode=require";
         $pdo = new PDO($dsn, $user, $pass, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
 
-        $stmt = $pdo->prepare("SELECT * FROM usuarios WHERE correo = ?");
+        // Cambiado de 'correo' a 'email' según la estructura de tu base de datos
+        $stmt = $pdo->prepare("SELECT * FROM usuarios WHERE email = ?");
         $stmt->execute([$correo]);
         $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($usuario && (password_verify($password, $usuario['password']) || $password === $usuario['password'])) {
-            $_SESSION['usuario'] = $usuario['correo'];
+            $_SESSION['usuario'] = $usuario['email'];
             $_SESSION['nombre'] = $usuario['nombre'];
             $_SESSION['usuario_id'] = $usuario['id'];
             
@@ -37,7 +38,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $error = "Correo o contraseña incorrectos.";
         }
     } catch (PDOException $e) {
-        // Muestra el error exacto devuelto por PostgreSQL
         $error = "Error de conexión: " . $e->getMessage();
     }
 }
@@ -86,8 +86,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <header class="top-banner">
         <a href="index.php" class="banner-logo">
             <div class="cart-icon-small">🛒</div>
-            <div class="brand-name">lusi</div>
-            <div class="brand-sub">shop</div>
+            <div class="banner-name">lusi</div>
+            <div class="banner-sub">shop</div>
         </a>
         <span class="banner-title">Lusi shop</span>
     </header>
