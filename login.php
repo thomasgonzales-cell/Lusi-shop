@@ -85,10 +85,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <header class="top-banner">
     <!-- Logo circular de la esquina con enlace para volver al inicio -->
-    <a href="index.php" class="header-logo">
-        <div class="cart-icon">🛒</div>
-        <div class="brand-name">lusi</div>
-        <div class="brand-sub">shop</div>
+        <a href="index.php" class="banner-logo">
+            <div class="cart-icon-small">🛒</div>
+            <div class="brand-name">lusi</div>
+            <div class="brand-sub">shop</div>
+        </a>
     </a>
         <span class="banner-title">Lusi shop</span>
     </header>
