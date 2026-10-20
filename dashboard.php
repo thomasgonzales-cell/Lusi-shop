@@ -271,7 +271,7 @@ if ($usuario_id > 0) {
 
     <!-- Contenido Central -->
     <main class="main-content">
-        <h1 class="welcome-heading">¡Bienvenido a Lusi shop<?php echo isset($_SESSION['nombre']) ? ', ' . htmlspecialchars($_SESSION['nombre']) : ''; ?>!</h1>
+        <h1 class="welcome-heading">Bienvenido a Lusi shop<?php echo isset($_SESSION['nombre']) ? ', ' . htmlspecialchars($_SESSION['nombre']) : ''; ?></h1>
         
         <p class="welcome-phrase">
             Un descanso, un antojo,<br>
