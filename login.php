@@ -142,7 +142,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </form>
 
             <div class="admin-section">
-                <a href="admin_login.php" class="admin-link">🔒 ¿Eres administrador? Inicia sesión aquí</a>
+                <a href="admin_login.php" class="admin-link"> ¿Eres administrador? Inicia sesión aquí</a>
             </div>
         </div>
     </main>
