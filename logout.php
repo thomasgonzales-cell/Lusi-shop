@@ -17,8 +17,6 @@ if (ini_get("session.use_cookies")) {
 // Finalmente, destruimos la sesión
 session_destroy();
 
-// Redirigir al usuario a la página principal pública (por ejemplo, index.php)
-// Cambia 'index.php' por el nombre del archivo de la página de inicio pública de tu tienda si se llama diferente.
 header("Location: index.php");
 exit();
 ?>
