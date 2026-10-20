@@ -148,7 +148,7 @@ if ($usuario_id > 0) {
 
         .welcome-heading {
             font-size: 2.2rem;
-            font-weight: 700;
+            font-weight: 400; /* Negrita removida */
             margin-bottom: 15px;
             color: #000000;
         }
@@ -175,7 +175,7 @@ if ($usuario_id > 0) {
 
         .notifications-container h3 {
             font-size: 1.2rem;
-            font-weight: 700;
+            font-weight: 400; /* Negrita removida */
             margin-bottom: 15px;
             color: #0d1b2a;
             border-bottom: 2px solid #e50000;
@@ -280,13 +280,13 @@ if ($usuario_id > 0) {
 
         <!-- Sección de notificaciones de pedidos -->
         <div class="notifications-container">
-            <h3> Estado de tus pedidos</h3>
+            <h3>Estado de tus pedidos</h3>
             <?php if (empty($notificaciones)): ?>
                 <p style="color: #666; font-size: 0.95rem;">No tienes pedidos recientes.</p>
             <?php else: ?>
                 <?php foreach ($notificaciones as $n): ?>
                     <div class="notification-item" style="border-left: 4px solid <?php echo ($n['estado'] == 'Completado') ? '#28a745' : '#ffc107'; ?>;">
-                        <p><strong>Pedido #<?php echo $n['id']; ?></strong> - Total: $<?php echo number_format($n['total'], 0, ',', '.'); ?></p>
+                        <p><strong>Pedido #<?php echo $n['id']; ?></strong> Total: $<?php echo number_format($n['total'], 0, ',', '.'); ?></p>
                         <p style="color: #555;">Productos: <?php echo htmlspecialchars($n['productos']); ?></p>
                         <p style="margin-top: 6px;">
                             Estado: 
