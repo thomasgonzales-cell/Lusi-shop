@@ -280,7 +280,7 @@ if ($usuario_id > 0) {
 
         <!-- Sección de notificaciones de pedidos -->
         <div class="notifications-container">
-            <h3>🔔 Estado de tus Pedidos</h3>
+            <h3> Estado de tus pedidos</h3>
             <?php if (empty($notificaciones)): ?>
                 <p style="color: #666; font-size: 0.95rem;">No tienes pedidos recientes.</p>
             <?php else: ?>
