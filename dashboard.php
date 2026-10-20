@@ -148,14 +148,14 @@ if ($usuario_id > 0) {
 
         .welcome-heading {
             font-size: 2.2rem;
-            font-weight: 400; /* Negrita removida */
+            font-weight: 400;
             margin-bottom: 15px;
             color: #000000;
         }
 
         .welcome-phrase {
             font-size: 1.15rem;
-            font-weight: 600;
+            font-weight: 400; /* Negrita removida */
             line-height: 1.5;
             margin-bottom: 25px;
             color: #000000;
@@ -175,7 +175,7 @@ if ($usuario_id > 0) {
 
         .notifications-container h3 {
             font-size: 1.2rem;
-            font-weight: 400; /* Negrita removida */
+            font-weight: 400;
             margin-bottom: 15px;
             color: #0d1b2a;
             border-bottom: 2px solid #e50000;
@@ -222,13 +222,14 @@ if ($usuario_id > 0) {
         .footer {
             padding: 20px;
             font-size: 1rem;
-            font-weight: 600;
+            font-weight: 400; /* Negrita removida */
             text-align: center;
         }
 
         .footer a {
             color: #000000;
             text-decoration: none;
+            font-weight: 400; /* Negrita removida */
         }
 
         .footer a:hover {
