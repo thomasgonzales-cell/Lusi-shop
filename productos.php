@@ -1,4 +1,4 @@
-                <?php session_start(); ?>
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -7,7 +7,7 @@
     <title>Lusi shop - Productos</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -17,53 +17,28 @@
         .banner-left { display: flex; align-items: center; gap: 15px; }
         .banner-logo { width: 55px; height: 55px; border-radius: 50%; border: 2px solid #ffffff; background-color: #0d1b2a; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center; text-decoration: none; }
         .banner-logo .cart-icon-small { font-size: 11px; color: #e50000; margin-bottom: 1px; }
-        .banner-logo .brand-name { font-weight: 600; font-size: 11px; line-height: 1; }
-        .banner-logo .brand-sub { color: #e50000; font-size: 8px; font-weight: 600; }
-        .banner-title { color: #ffffff; font-size: 1.5rem; font-weight: 500; }
+        .banner-logo .brand-name { font-weight: 400; font-size: 11px; line-height: 1; }
+        .banner-logo .brand-sub { color: #e50000; font-size: 8px; font-weight: 400; }
+        .banner-title { color: #ffffff; font-size: 1.5rem; font-weight: 400; }
         
-        /* Enlace humanizado para el carrito */
-        .cart-link { 
-            font-size: 0.95rem; 
-            color: #ffffff; 
-            background-color: rgba(255, 255, 255, 0.15);
-            padding: 8px 14px;
-            border-radius: 20px;
-            text-decoration: none; 
-            display: flex; 
-            align-items: center; 
-            gap: 6px;
-            position: relative; 
-            font-weight: 400;
-            transition: background-color 0.2s ease;
-        }
-        .cart-link:hover {
-            background-color: rgba(255, 255, 255, 0.25);
-        }
-        .cart-badge { 
-            background-color: #0d1b2a; 
-            color: white; 
-            font-size: 0.75rem; 
-            padding: 2px 7px; 
-            border-radius: 10px; 
-            font-weight: 500; 
-            margin-left: 2px;
-        }
+        .cart-link { font-size: 2rem; color: #ffffff; text-decoration: none; display: flex; align-items: center; position: relative; }
+        .cart-badge { position: absolute; top: -5px; right: -10px; background-color: #0d1b2a; color: white; font-size: 0.8rem; padding: 2px 6px; border-radius: 50%; font-weight: 400; }
 
         .main-content { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 20px; }
         .products-container { display: flex; gap: 40px; justify-content: center; align-items: flex-start; flex-wrap: wrap; max-width: 1100px; width: 100%; }
         
         .product-card { display: flex; flex-direction: column; align-items: center; text-align: center; width: 250px; background: #fff; }
         .product-image { width: 220px; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); background-color: #f7f7f7; }
-        
         .product-name { font-size: 1.3rem; font-weight: 400; margin-bottom: 5px; }
         .product-price { font-size: 1.2rem; font-weight: 400; margin-bottom: 15px; }
 
+        /* Estilos para el selector de cantidad de la imagen */
         .quantity-box { background-color: #e0e0e0; padding: 6px 0; border-radius: 8px; font-size: 1.3rem; font-weight: 400; margin-bottom: 5px; width: 100%; text-align: center; }
         .quantity-controls { display: flex; align-items: center; justify-content: center; gap: 15px; font-size: 1rem; font-weight: 400; margin-bottom: 12px; }
-        .qty-btn { background: none; border: none; font-size: 1.6rem; font-weight: 400; cursor: pointer; color: #000; transition: color 0.2s; padding: 0 5px; user-select: none; }
+        .qty-btn { background: none; border: none; font-size: 1.8rem; font-weight: 400; cursor: pointer; color: #000; transition: color 0.2s; padding: 0 5px; }
         .qty-btn:hover { color: #e50000; }
 
-        .btn-buy { background-color: #ff3b30; color: #ffffff; border: none; padding: 10px 0; width: 100%; border-radius: 8px; font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 500; cursor: pointer; text-decoration: none; display: inline-block; text-align: center; transition: background-color 0.2s ease; }
+        .btn-buy { background-color: #ff3b30; color: #ffffff; border: none; padding: 10px 0; width: 100%; border-radius: 8px; font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 400; cursor: pointer; text-decoration: none; display: inline-block; text-align: center; transition: background-color 0.2s ease; }
         .btn-buy:hover { background-color: #d32f2f; }
         
         .footer-back { padding: 20px 40px; max-width: 1100px; margin: 0 auto; width: 100%; }
@@ -82,9 +57,8 @@
             </a>
             <span class="banner-title">Lusi shop</span>
         </div>
-        
         <a href="carrito.php" class="cart-link">
-            <span>Ver mi carrito</span> 🛒 
+            🛒 
             <?php 
                 $total_items = 0;
                 if(isset($_SESSION['carrito'])) {
@@ -154,29 +128,27 @@
     </div>
 
     <script>
-        var cantidades = {
+        // Objeto para llevar el registro de las cantidades de cada producto en pantalla
+        let cantidades = {
             'panzerotti': 1,
             'gaseosa': 1,
             'empanada': 1
         };
 
         function cambiarCantidad(producto, cambio) {
-            cantidades[producto] = (cantidades[producto] || 1) + cambio;
+            cantidades[producto] += cambio;
             if (cantidades[producto] < 1) {
                 cantidades[producto] = 1;
             }
 
-            var qtyBox = document.getElementById('qty-' + producto);
-            if (qtyBox) {
-                qtyBox.innerText = cantidades[producto];
-            }
+            // Actualizar el número visual en la caja gris
+            document.getElementById('qty-' + producto).innerText = cantidades[producto];
 
-            var btn = document.getElementById('btn-' + producto);
-            if (btn) {
-                var url = new URL(btn.href, window.location.origin);
-                url.searchParams.set('cantidad', cantidades[producto]);
-                btn.href = url.pathname + url.search;
-            }
+            // Actualizar dinámicamente el enlace del botón Comprar con la cantidad seleccionada
+            let btn = document.getElementById('btn-' + producto);
+            let url = new URL(btn.href);
+            url.searchParams.set('cantidad', cantidades[producto]);
+            btn.href = url.toString();
         }
     </script>
 </body>
