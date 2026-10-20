@@ -1,4 +1,4 @@
-<?php session_start(); ?>
+                <?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -21,7 +21,7 @@
         .banner-logo .brand-sub { color: #e50000; font-size: 8px; font-weight: 600; }
         .banner-title { color: #ffffff; font-size: 1.5rem; font-weight: 500; }
         
-        /* Enlace humanizado para el carrito en la esquina derecha */
+        /* Enlace humanizado para el carrito */
         .cart-link { 
             font-size: 0.95rem; 
             color: #ffffff; 
@@ -55,14 +55,12 @@
         .product-card { display: flex; flex-direction: column; align-items: center; text-align: center; width: 250px; background: #fff; }
         .product-image { width: 220px; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); background-color: #f7f7f7; }
         
-        /* Nombres y precios sin negrita pesada */
         .product-name { font-size: 1.3rem; font-weight: 400; margin-bottom: 5px; }
         .product-price { font-size: 1.2rem; font-weight: 400; margin-bottom: 15px; }
 
-        /* Estilos para el selector de cantidad sin negritas */
         .quantity-box { background-color: #e0e0e0; padding: 6px 0; border-radius: 8px; font-size: 1.3rem; font-weight: 400; margin-bottom: 5px; width: 100%; text-align: center; }
         .quantity-controls { display: flex; align-items: center; justify-content: center; gap: 15px; font-size: 1rem; font-weight: 400; margin-bottom: 12px; }
-        .qty-btn { background: none; border: none; font-size: 1.6rem; font-weight: 400; cursor: pointer; color: #000; transition: color 0.2s; padding: 0 5px; }
+        .qty-btn { background: none; border: none; font-size: 1.6rem; font-weight: 400; cursor: pointer; color: #000; transition: color 0.2s; padding: 0 5px; user-select: none; }
         .qty-btn:hover { color: #e50000; }
 
         .btn-buy { background-color: #ff3b30; color: #ffffff; border: none; padding: 10px 0; width: 100%; border-radius: 8px; font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 500; cursor: pointer; text-decoration: none; display: inline-block; text-align: center; transition: background-color 0.2s ease; }
@@ -85,13 +83,12 @@
             <span class="banner-title">Lusi shop</span>
         </div>
         
-        <!-- Enlace al carrito humanizado -->
         <a href="carrito.php" class="cart-link">
             <span>Ver mi carrito</span> 🛒 
             <?php 
                 $total_items = 0;
                 if(isset($_SESSION['carrito'])) {
-                    foreach($_SESSION['carrito'] as$item) { $total_items +=$item['cantidad']; }
+                    foreach($_SESSION['carrito'] as $item) { $total_items += $item['cantidad']; }
                 }
                 if($total_items > 0) { echo "<span class='cart-badge'>$total_items</span>"; }
             ?>
@@ -137,4 +134,50 @@
             <div class="product-card">
                 <img src="empanada.png" alt="Empanada" class="product-image">
                 <div class="product-name">Empanada</div>
-                <div class="product-price">
+                <div class="product-price">2,500$</div>
+                
+                <div class="quantity-box" id="qty-empanada">1</div>
+                <div class="quantity-controls">
+                    <button type="button" class="qty-btn" onclick="cambiarCantidad('empanada', -1)">-</button>
+                    <span>Cantidad</span>
+                    <button type="button" class="qty-btn" onclick="cambiarCantidad('empanada', 1)">+</button>
+                </div>
+
+                <a href="agregar.php?id=empanada&nombre=Empanada&precio=2500&imagen=empanada.png&cantidad=1" id="btn-empanada" class="btn-buy">Comprar</a>
+            </div>
+
+        </div>
+    </main>
+
+    <div class="footer-back">
+        <a href="dashboard.php" class="btn-back">← Volver al inicio</a>
+    </div>
+
+    <script>
+        var cantidades = {
+            'panzerotti': 1,
+            'gaseosa': 1,
+            'empanada': 1
+        };
+
+        function cambiarCantidad(producto, cambio) {
+            cantidades[producto] = (cantidades[producto] || 1) + cambio;
+            if (cantidades[producto] < 1) {
+                cantidades[producto] = 1;
+            }
+
+            var qtyBox = document.getElementById('qty-' + producto);
+            if (qtyBox) {
+                qtyBox.innerText = cantidades[producto];
+            }
+
+            var btn = document.getElementById('btn-' + producto);
+            if (btn) {
+                var url = new URL(btn.href, window.location.origin);
+                url.searchParams.set('cantidad', cantidades[producto]);
+                btn.href = url.pathname + url.search;
+            }
+        }
+    </script>
+</body>
+</html>
