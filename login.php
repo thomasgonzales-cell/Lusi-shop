@@ -4,27 +4,31 @@ $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $correo = trim($_POST['correo']);
-    $password =$_POST['password'];
+    $password = $_POST['password'];
 
     // Tus credenciales reales de Render
     $host = 'dpg-daulsnu0tbcc73bq1e40-a';
-    $db   = 'bsd_lusi_shop_bd';$user = 'bsd_lusi_shop_bd_user';
-    $pass = 'zZDjtVq4KL9wKMiLDeA4oX0b5nxVbJSb';$port = '5432';
+    $db   = 'bsd_lusi_shop_bd';
+    $user = 'bsd_lusi_shop_bd_user';
+    $pass = 'zZDjtVq4KL9wKMiLDeA4oX0b5nxVbJSb';
+    $port = '5432';
 
     try {
         $dsn = "pgsql:host=$host;port=$port;dbname=$db;sslmode=require";
-        $pdo = new PDO($dsn, $user,$pass, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+        $pdo = new PDO($dsn, $user, $pass, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
 
-        $stmt =$pdo->prepare("SELECT * FROM usuarios WHERE email = ?");
+        // Cambiado de 'correo' a 'email' según la estructura de tu base de datos
+        $stmt = $pdo->prepare("SELECT * FROM usuarios WHERE email = ?");
         $stmt->execute([$correo]);
-        $usuario =$stmt->fetch(PDO::FETCH_ASSOC);
+        $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($usuario && (password_verify($password,$usuario['password']) || $password ===$usuario['password'])) {
-            $_SESSION['usuario'] =$usuario['email'];
-            $_SESSION['nombre'] =$usuario['nombre'];
-            $_SESSION['usuario_id'] =$usuario['id'];
+        if ($usuario && (password_verify($password, $usuario['password']) || $password === $usuario['password'])) {
+            $_SESSION['usuario'] = $usuario['email'];
+            $_SESSION['nombre'] = $usuario['nombre'];
+            $_SESSION['usuario_id'] = $usuario['id'];
             
-            if (isset($usuario['rol']) && $usuario['rol'] === 'admin') {$_SESSION['admin_logged'] = true;
+            if (isset($usuario['rol']) && $usuario['rol'] === 'admin') {
+                $_SESSION['admin_logged'] = true;
                 header("Location: admin.php");
             } else {
                 header("Location: dashboard.php");
@@ -33,7 +37,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         } else {
             $error = "Correo o contraseña incorrectos.";
         }
-    } catch (PDOException $e) {$error = "Error de conexión: " . $e->getMessage();
+    } catch (PDOException $e) {
+        $error = "Error de conexión: " . $e->getMessage();
     }
 }
 ?>
@@ -52,8 +57,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         body { font-family: 'Montserrat', sans-serif; background-color: #ffffff; color: #000000; min-height: 100vh; display: flex; flex-direction: column; justify-content: space-between; }
         
         .top-banner { width: 100%; background-color: #e50000; height: 75px; display: flex; align-items: center; padding: 0 20px; gap: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .banner-logo { width: 55px; height: 55px; border-radius: 50%; border: 2px solid #ffffff; background-color: #0d1b2a; display: flex; justify-content: center; align-items: center; text-decoration: none; overflow: hidden; }
-        .banner-logo img { width: 100%; height: 100%; object-fit: cover; }
+        .banner-logo { width: 55px; height: 55px; border-radius: 50%; border: 2px solid #ffffff; background-color: #0d1b2a; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center; text-decoration: none; }
+        .banner-logo .cart-icon-small { font-size: 11px; color: #e50000; margin-bottom: 1px; }
+        .banner-logo .brand-name { font-weight: bold; font-size: 11px; line-height: 1; }
+        .banner-logo .brand-sub { color: #e50000; font-size: 8px; font-weight: bold; }
         .banner-title { color: #ffffff; font-size: 1.5rem; font-weight: 600; }
 
         .main-content { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 20px; }
@@ -78,7 +85,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <header class="top-banner">
         <a href="index.php" class="banner-logo">
-            <img src="logo.png" alt="Lusi shop Logo">
+            <div class="cart-icon-small">🛒</div>
+            <div class="banner-name">lusi</div>
+            <div class="banner-sub">shop</div>
         </a>
         <span class="banner-title">Lusi shop</span>
     </header>
@@ -92,4 +101,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <?php endif; ?>
 
             <form action="login.php" method="POST">
-                <div class="form-group"> 
+                <div class="form-group">
+                    <label for="correo">Correo</label>
+                    <input type="email" id="correo" name="correo" required placeholder="tucorreo@colegio.edu.co">
+                </div>
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" name="password" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn-submit">Entrar</button>
+            </form>
+
+            <div class="admin-section">
+                <a href="admin_login.php" class="admin-link">🔒 ¿Eres administrador? Inicia sesión aquí</a>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>
